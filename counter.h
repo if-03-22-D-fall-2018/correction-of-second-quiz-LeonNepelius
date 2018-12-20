@@ -22,7 +22,7 @@ struct CounterImp{
   enum Directions direction;
   int value;
   int count;
-  bool is_used;
+  bool is_used; // Added isused
 };
 typedef struct CounterImp* Counter;
 Counter new_counter(enum Directions direction);

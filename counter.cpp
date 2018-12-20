@@ -11,6 +11,7 @@
 *-----------------------------------------------------------------------------
 */
 #include "counter.h"
+//Implemented everything
 struct CounterImp c1 = {UNDEFINED,0,0};
 struct CounterImp c2 = {UNDEFINED,0,0};
 struct CounterImp c3 = {UNDEFINED,0,0};
@@ -23,7 +24,7 @@ static Counter all_counters[COUNTER_COUNT] = {&c1,&c2,&c3,&c4,&c5,&c6,&c7,&c8};
 Counter new_counter(enum Directions direction)
 {
   for (int i = 0; i < COUNTER_COUNT; i++) {
-    if (all_counters[i]->is_used == false)
+    if (!all_counters[i]->is_used)
     {
       all_counters[i]->direction = direction;
       all_counters[i]->is_used = true;
@@ -34,69 +35,42 @@ Counter new_counter(enum Directions direction)
 }
 void set_increment_value(Counter counter,int value)
 {
-  if (value < 0)
+  if(value>=0)
   {
+    counter->value=value;
   }
-  else
-  {
-    for (int i = 0; i < COUNTER_COUNT; i++) {
-      if (all_counters[i] == counter)
-      {
-        all_counters[i]->value = value;
-      }
-    }
-  }
-
 }
 int get_increment_value(Counter counter)
 {
-  for (int i = 0; i < COUNTER_COUNT; i++) {
-    if (all_counters[i] == counter)
-    {
-      return all_counters[i]->value;
-    }
-  }
-  return 0;
+  return counter->value;
 }
 int get_value(Counter counter)
 {
-  for (int i = 0; i < COUNTER_COUNT; i++) {
-    if (all_counters[i] == counter)
-    {
-      return all_counters[i]->count;
-    }
-  }
-  return 0;
+  return counter->count;
 }
 void increment(Counter counter)
 {
-  for (int i = 0; i < COUNTER_COUNT; i++) {
-    if (all_counters[i] == counter)
-    {
-      all_counters[i]->count += all_counters[i]->value;
-    }
-  }
+  if (counter->direction==UP)
+     {
+       counter->count+=counter->value;
+     }
+     else if (counter->direction==DOWN)
+     {
+       counter->count-=counter->value;
+     }
 }
 bool set_value(Counter counter, int value)
 {
-  for (int i = 0; i < COUNTER_COUNT; i++) {
-    if (all_counters[i] == counter)
-    {
-      all_counters[i]->value = value;
+  if (counter->direction==DOWN)
+  {
+    counter->count=value;
       return true;
-    }
   }
   return false;
 }
 Directions get_direction(Counter counter)
 {
-  for (int i = 0; i < COUNTER_COUNT; i++) {
-    if (all_counters[i] == counter)
-    {
-      return all_counters[i]->direction;
-    }
-  }
-  return UNDEFINED;
+  return counter->direction;
 }
 void set_direction(Counter counter,enum Directions direction)
 {
@@ -111,7 +85,8 @@ void init()
 {
     for (int i = 0; i < COUNTER_COUNT; i++) {
       all_counters[i]->direction = UNDEFINED;
-      all_counters[i]->value = 1;
+      all_counters[i]->value=1;
+      all_counters[i]->count = 0;
       all_counters[i]->is_used = false;
     }
 }
